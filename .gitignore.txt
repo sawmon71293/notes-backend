@@ -1,0 +1,66 @@
+## Ignore Visual Studio temporary files, build results, and
+## user-generated files
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+[Ll]ogs/
+
+# Publish output
+publish/
+out/
+
+# Visual Studio cache
+.vs/
+.vscode/
+
+# MSTest test results
+TestResults/
+*.VisualState.xml
+*.cache
+*.dat
+*.dbmdl
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# Local DBs
+*.db
+*.sqlite
+
+# Environment secrets
+.env
+.env.*
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+.nuget/
+
+# Others
+*.log
+*.DS_Store
+Thumbs.db
+
+# Rider
+.idea/
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# dotCover
+*.dotCover
