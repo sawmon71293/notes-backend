@@ -1,16 +1,19 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using note_backend.Models;
+using System.Data;
+using note_backend.DTOs;
 
 namespace note_backend.Repositories
 {
     public class UserRepository
     {
         private readonly string _connectionString;
-
+        private readonly IConfiguration _config;
         public UserRepository(IConfiguration config)
         {
-            _connectionString = config.GetConnectionString("DefaultConnection");
+            _config = config;
+            _connectionString = _config.GetConnectionString("DefaultConnection");
         }
 
         private SqlConnection Connection => new SqlConnection(_connectionString);
@@ -29,9 +32,27 @@ namespace note_backend.Repositories
 
         public async Task<int> CreateAsync(User user)
         {
-            using var conn = Connection;
-            var sql = "INSERT INTO Users (Name, Email, Password) VALUES (@Name, @Email, @Password)";
-            return await conn.ExecuteAsync(sql, user);
+
+            try
+            {
+                using var conn = Connection;
+
+                var sql = "INSERT INTO Users (Name, Email, Password) VALUES (@Name, @Email, @Password)";
+                var result = await conn.ExecuteAsync(sql, new
+                {
+                    Name = user.Name,
+                    Email = user.Email,
+                    Password = user.Password
+                });
+
+                Console.WriteLine($"Inserted rows: {result}"); // Debug log
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error inserting user: " + ex.Message);
+                return 0;
+            }
         }
 
         public async Task<int> UpdateAsync(User user)
@@ -45,6 +66,29 @@ namespace note_backend.Repositories
         {
             using var conn = Connection;
             return await conn.ExecuteAsync("DELETE FROM Users WHERE Id = @Id", new { Id = id });
+        }
+
+        public async Task<bool> IsEmailExistsAsync(string email)
+        {
+            using var conn = Connection;
+            var sql = "SELECT COUNT(1) FROM Users WHERE Email = @Email";
+            var count = await conn.ExecuteScalarAsync<int>(sql, new { Email = email });
+            return count > 0;
+        }
+
+        public async Task<bool> IsDatabaseConnectedAsync()
+        {
+            try
+            {
+                using var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+                await connection.OpenAsync();
+                return connection.State == ConnectionState.Open;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Database connection error: " + ex.Message);
+                return false;
+            }
         }
     }
 }

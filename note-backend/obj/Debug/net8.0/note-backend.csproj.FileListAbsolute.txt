@@ -79,3 +79,6 @@ C:\Users\sawmo\source\repos\note-backend\note-backend\obj\Debug\net8.0\refint\no
 C:\Users\sawmo\source\repos\note-backend\note-backend\obj\Debug\net8.0\note-backend.pdb
 C:\Users\sawmo\source\repos\note-backend\note-backend\obj\Debug\net8.0\note-backend.genruntimeconfig.cache
 C:\Users\sawmo\source\repos\note-backend\note-backend\obj\Debug\net8.0\ref\note-backend.dll
+C:\Users\sawmo\source\repos\note-backend\note-backend\obj\Debug\net8.0\note-backend.sourcelink.json
+C:\Users\sawmo\source\repos\note-backend\note-backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\sawmo\source\repos\note-backend\note-backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

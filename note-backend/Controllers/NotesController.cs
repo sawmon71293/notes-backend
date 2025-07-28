@@ -1,10 +1,12 @@
 ﻿// Controllers/NotesController.cs
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using note_backend.Models;
 using note_backend.Repositories;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/note")]
+[Authorize]
 public class NotesController : ControllerBase
 {
     private readonly NoteRepository _repo;

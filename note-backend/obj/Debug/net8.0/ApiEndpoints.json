@@ -1,8 +1,50 @@
 [
   {
+    "ContainingType": "note_backend.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "note_backend.DTOs.UserLoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "note_backend.Controllers.AuthController",
+    "Method": "Me",
+    "RelativePath": "api/auth/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "note_backend.Controllers.AuthController",
+    "Method": "Register",
+    "RelativePath": "api/auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "note_backend.DTOs.UserRegisterDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "NotesController",
     "Method": "Get",
-    "RelativePath": "api/Notes",
+    "RelativePath": "api/note",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -12,7 +54,7 @@
   {
     "ContainingType": "NotesController",
     "Method": "Post",
-    "RelativePath": "api/Notes",
+    "RelativePath": "api/note",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -28,7 +70,7 @@
   {
     "ContainingType": "NotesController",
     "Method": "Get",
-    "RelativePath": "api/Notes/{id}",
+    "RelativePath": "api/note/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -44,7 +86,7 @@
   {
     "ContainingType": "NotesController",
     "Method": "Put",
-    "RelativePath": "api/Notes/{id}",
+    "RelativePath": "api/note/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -65,7 +107,7 @@
   {
     "ContainingType": "NotesController",
     "Method": "Delete",
-    "RelativePath": "api/Notes/{id}",
+    "RelativePath": "api/note/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -81,7 +123,7 @@
   {
     "ContainingType": "note_backend.Controllers.UserController",
     "Method": "GetAll",
-    "RelativePath": "api/User",
+    "RelativePath": "api/user",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -90,24 +132,8 @@
   },
   {
     "ContainingType": "note_backend.Controllers.UserController",
-    "Method": "Create",
-    "RelativePath": "api/User",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "user",
-        "Type": "note_backend.Models.User",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "note_backend.Controllers.UserController",
     "Method": "GetById",
-    "RelativePath": "api/User/{id}",
+    "RelativePath": "api/user/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -123,7 +149,7 @@
   {
     "ContainingType": "note_backend.Controllers.UserController",
     "Method": "Update",
-    "RelativePath": "api/User/{id}",
+    "RelativePath": "api/user/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -144,7 +170,7 @@
   {
     "ContainingType": "note_backend.Controllers.UserController",
     "Method": "Delete",
-    "RelativePath": "api/User/{id}",
+    "RelativePath": "api/user/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
