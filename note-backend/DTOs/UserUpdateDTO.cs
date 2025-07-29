@@ -1,6 +1,6 @@
 ﻿namespace note_backend.DTOs
 {
-    public class UserRegisterDTO
+    public class UserUpdateDTO
     {
         public string Name { get; set; }
         public string Email { get; set; }

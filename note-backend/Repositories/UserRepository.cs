@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using note_backend.Models;
 using System.Data;
 using note_backend.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace note_backend.Repositories
 {
@@ -13,7 +14,7 @@ namespace note_backend.Repositories
         public UserRepository(IConfiguration config)
         {
             _config = config;
-            _connectionString = _config.GetConnectionString("DefaultConnection");
+            _connectionString = config.GetConnectionString("DefaultConnection");
         }
 
         private SqlConnection Connection => new SqlConnection(_connectionString);
@@ -30,6 +31,20 @@ namespace note_backend.Repositories
             return await conn.QueryFirstOrDefaultAsync<User>("SELECT * FROM Users WHERE Id = @Id", new { Id = id });
         }
 
+        public async Task<IEnumerable<Note>> GetNotesByUserIdAsync(int userId)
+        {
+            using var conn = Connection;
+            var sql = "SELECT * FROM Notes WHERE UserId = @UserId";
+            return await conn.QueryAsync<Note>(sql, new { UserId = userId });
+        }
+
+
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            using var conn = Connection;
+            return await conn.QueryFirstOrDefaultAsync<User>("SELECT * FROM Users WHERE Email = @Email", new { Email = email });
+        }
+
         public async Task<int> CreateAsync(User user)
         {
 
@@ -37,22 +52,31 @@ namespace note_backend.Repositories
             {
                 using var conn = Connection;
 
-                var sql = "INSERT INTO Users (Name, Email, Password) VALUES (@Name, @Email, @Password)";
-                var result = await conn.ExecuteAsync(sql, new
+                var sql = @"INSERT INTO Users (Name, Email, Password)
+                         OUTPUT INSERTED.Id
+                         VALUES (@Name, @Email, @Password)";
+                var newUserId = await conn.ExecuteScalarAsync<int>(sql, new
                 {
                     Name = user.Name,
                     Email = user.Email,
-                    Password = user.Password
+                    Password = user.Password,
+                    CreatedAt = DateTime.UtcNow
                 });
 
-                Console.WriteLine($"Inserted rows: {result}"); // Debug log
-                return result;
+                return newUserId;
+
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error inserting user: " + ex.Message);
-                return 0;
+                Console.WriteLine(ex.Message);
+                return -1;
             }
+        }
+
+        private IActionResult Ok(object value, int newUserId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<int> UpdateAsync(User user)

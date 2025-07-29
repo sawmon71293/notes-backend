@@ -6,12 +6,13 @@ using note_backend.DTOs;
 using note_backend.Models;
 using note_backend.Repositories;
 using System.Data;
+using System.Security.Claims;
 
 namespace note_backend.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    [Authorize]
+    
     public class UserController : ControllerBase
     {
         private readonly UserRepository _repo;
@@ -29,23 +30,67 @@ namespace note_backend.Controllers
         {
             var user = await _repo.GetByIdAsync(id);
             if (user == null) return NotFound();
-            return Ok(user);
+            UserResponseDTO userResponseDTO = new UserResponseDTO()
+            {
+                Email = user.Email,
+                Name = user.Name,
+                Id = user.Id,
+            };
+            return Ok(userResponseDTO);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, User user)
+        [Authorize]
+        public async Task<IActionResult> Update(int id, [FromBody] UserUpdateDTO userDto)
         {
-            user.Id = id;
-            await _repo.UpdateAsync(user);
-            return Ok();
+            var updatingUser = await _repo.GetByIdAsync(id);
+            var loginnedEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            if (updatingUser == null) return NotFound();
+            if (updatingUser.Email != loginnedEmail)
+            {
+                return Forbid("You are not allowed to edit someone else’s info.");
+            }
+
+            User user = new User
+            {
+                Id = id,
+                Email = userDto.Email,
+                Name = userDto.Name,
+                Password = userDto.Password,
+            };
+            var result = await _repo.UpdateAsync(user);
+            if (result > 0)
+                return NoContent();
+
+            return StatusCode(500, "An error occurred while updating the user.");
+
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
+            var loginnedEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var updatingUser = await _repo.GetByIdAsync(id);
+            if(updatingUser == null) return NotFound();
+
+            if (updatingUser.Email == loginnedEmail)
+            {
+                return Forbid("Cannot delete the user");
+            }
+
             await _repo.DeleteAsync(id);
             return Ok();
         }
+
+        [HttpGet("{id}/notes")]
+        [Authorize]
+        public async Task<IActionResult> GetUserNotes(int id)
+        {
+            var notes = await _repo.GetNotesByUserIdAsync(id);
+            return Ok(notes);
+        }
+
 
     }
 }

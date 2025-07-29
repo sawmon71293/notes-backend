@@ -26,26 +26,33 @@ namespace note_backend.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserRegisterDto dto)
+        public async Task<IActionResult> Register(UserRegisterDTO dto)
         {
             if (_users.Any(u => u.Email == dto.Email))
                 return BadRequest("User already exists");
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            
             var user = new User
             {
-                Id = _users.Count + 1,
                 Name = dto.Name,
                 Email = dto.Email,
                 Password = passwordHash
             };
 
-            await _repo.CreateAsync(user);
-            return Ok("User registered successfully");
+            int createdId = await _repo.CreateAsync(user);
+            UserResponseDTO userResponseDTO = new UserResponseDTO
+            {
+                Id = createdId,
+                Email = dto.Email,
+                Name = dto.Name,
+            };
+
+            return Ok(userResponseDTO);
         }
 
         [HttpPost("login")]
-        public IActionResult Login(UserLoginDto dto)
+        public IActionResult Login(UserLoginDTO dto)
         {
             var user = _users.FirstOrDefault(u => u.Email == dto.Email);
             if (user == null || string.IsNullOrEmpty(user.Password) || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
@@ -56,15 +63,5 @@ namespace note_backend.Controllers
             return Ok(new { token });
         }
 
-        [HttpGet("me")]
-        [Authorize]
-        public IActionResult Me()
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = _users.FirstOrDefault(u => u.Id.ToString() == userId);
-            if (user == null) return NotFound();
-
-            return Ok(new { user.Id, user.Name, user.Email });
-        }
     }
 }

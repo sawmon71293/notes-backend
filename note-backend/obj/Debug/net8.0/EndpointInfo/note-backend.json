@@ -14,17 +14,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRegisterDto"
+                "$ref": "#/components/schemas/UserRegisterDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRegisterDto"
+                "$ref": "#/components/schemas/UserRegisterDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRegisterDto"
+                "$ref": "#/components/schemas/UserRegisterDTO"
               }
             }
           }
@@ -45,17 +45,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserLoginDto"
+                "$ref": "#/components/schemas/UserLoginDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserLoginDto"
+                "$ref": "#/components/schemas/UserLoginDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserLoginDto"
+                "$ref": "#/components/schemas/UserLoginDTO"
               }
             }
           }
@@ -67,22 +67,10 @@
         }
       }
     },
-    "/api/auth/me": {
-      "get": {
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/note": {
       "get": {
         "tags": [
-          "Notes"
+          "Note"
         ],
         "responses": {
           "200": {
@@ -92,23 +80,23 @@
       },
       "post": {
         "tags": [
-          "Notes"
+          "Note"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Note"
+                "$ref": "#/components/schemas/NoteCreateDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Note"
+                "$ref": "#/components/schemas/NoteCreateDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Note"
+                "$ref": "#/components/schemas/NoteCreateDTO"
               }
             }
           }
@@ -123,7 +111,7 @@
     "/api/note/{id}": {
       "get": {
         "tags": [
-          "Notes"
+          "Note"
         ],
         "parameters": [
           {
@@ -144,7 +132,7 @@
       },
       "put": {
         "tags": [
-          "Notes"
+          "Note"
         ],
         "parameters": [
           {
@@ -184,7 +172,7 @@
       },
       "delete": {
         "tags": [
-          "Notes"
+          "Note"
         ],
         "parameters": [
           {
@@ -257,17 +245,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UserUpdateDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UserUpdateDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UserUpdateDTO"
               }
             }
           }
@@ -279,6 +267,29 @@
         }
       },
       "delete": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user/{id}/notes": {
+      "get": {
         "tags": [
           "User"
         ],
@@ -326,6 +337,27 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NoteCreateDTO": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -349,14 +381,17 @@
             "type": "string",
             "nullable": true
           },
-          "passwordHash": {
-            "type": "string",
+          "notes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Note"
+            },
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "UserLoginDto": {
+      "UserLoginDTO": {
         "type": "object",
         "properties": {
           "email": {
@@ -370,7 +405,25 @@
         },
         "additionalProperties": false
       },
-      "UserRegisterDto": {
+      "UserRegisterDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserUpdateDTO": {
         "type": "object",
         "properties": {
           "name": {
