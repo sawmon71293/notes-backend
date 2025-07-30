@@ -130,7 +130,7 @@ If you like this project, please consider a star on GitHub!
 
 ## 🙏 Acknowledgments <a name="acknowledgements"></a>
 
-I would like to thank Microverse for the opportunity to dream big.
+I would like to thank myself for believing to dream big.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
