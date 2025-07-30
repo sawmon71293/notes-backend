@@ -55,6 +55,7 @@ In order to run this project you need:
 
 - Code editor like Visual Studio or Visual Studio Code
 - Latest [.NET SDK](https://dotnet.microsoft.com/en-us/download)
+- install SQL server
 
 ### Setup
 
