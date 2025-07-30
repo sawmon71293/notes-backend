@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "Ik/p6j6zc/4=",
+  "dgSpecHash": "uFOopFFRbA8=",
   "success": true,
   "projectFilePath": "C:\\Users\\sawmo\\source\\repos\\note-backend\\note-backend\\note-backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sawmo\\.nuget\\packages\\azure.core\\1.44.1\\azure.core.1.44.1.nupkg.sha512",
     "C:\\Users\\sawmo\\.nuget\\packages\\azure.identity\\1.13.2\\azure.identity.1.13.2.nupkg.sha512",
+    "C:\\Users\\sawmo\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\sawmo\\.nuget\\packages\\dapper\\2.1.66\\dapper.2.1.66.nupkg.sha512",
+    "C:\\Users\\sawmo\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.0\\microsoft.aspnetcore.authentication.jwtbearer.8.0.0.nupkg.sha512",
     "C:\\Users\\sawmo\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\sawmo\\.nuget\\packages\\microsoft.bcl.cryptography\\8.0.0\\microsoft.bcl.cryptography.8.0.0.nupkg.sha512",
     "C:\\Users\\sawmo\\.nuget\\packages\\microsoft.data.sqlclient\\6.1.0\\microsoft.data.sqlclient.6.1.0.nupkg.sha512",
