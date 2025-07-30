@@ -83,7 +83,7 @@ Installations:
 
 ### Run Tests <a name="runtests"></a>
 
-- no tests have implemented yet.
+- no tests have been implemented yet.
 
 <!-- AUTHORS -->
 
