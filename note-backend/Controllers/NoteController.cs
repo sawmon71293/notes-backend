@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 using note_backend.DTOs;
 using note_backend.Models;
 using note_backend.Repositories;
+using System.Collections;
 using System.Security.Claims;
 using static System.Net.WebRequestMethods;
 
@@ -64,7 +65,6 @@ public class NoteController : ControllerBase
             Title = note.Title,
             Content = note?.Content,
             CreatedAt = note.CreatedAt,
-            UpdatedAt = note?.UpdatedAt,
             UserId = user.Id
         };
 
@@ -72,17 +72,28 @@ public class NoteController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, [FromBody] Note note)
+    public async Task<IActionResult> Put(int id, [FromBody] NoteCreateDTO noteDto)
     {
-        note.Id = id;
-        await _repo.UpdateAsync(note);
-        return NoContent();
+        NoteUpdateDTO updateDto = new NoteUpdateDTO
+        {
+            Id = id,
+            Title = noteDto.Title,
+            Content = noteDto.Content,
+            UpdatedAt = DateTime.UtcNow
+
+        };
+        await _repo.UpdateAsync(updateDto);
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+        User? user = await _userRepo.GetByEmailAsync(email);
+        return Ok(await _repo.GetAllAsync(userId: user.Id));
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         await _repo.DeleteAsync(id);
-        return NoContent();
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+        User? user = await _userRepo.GetByEmailAsync(email);
+        return Ok(await _repo.GetAllAsync(userId: user.Id));
     }
 }

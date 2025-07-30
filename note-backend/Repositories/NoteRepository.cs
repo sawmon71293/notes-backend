@@ -57,11 +57,11 @@ namespace note_backend.Repositories
             }
         }
 
-        public async Task<int> UpdateAsync(Note note)
+        public async Task<int> UpdateAsync(NoteUpdateDTO noteDTO)
         {
             using var conn = Connection;
-            var sql = @"UPDATE Notes SET Title = @Title, Content = @Content WHERE Id = @Id";
-            return await conn.ExecuteAsync(sql, note);
+            var sql = @"UPDATE Notes SET Title = @Title, Content = @Content, UpdatedAt = @UpdatedAt WHERE Id = @Id";
+            return await conn.ExecuteAsync(sql, noteDTO);
         }
 
         public async Task<int> DeleteAsync(int id)

@@ -60,7 +60,25 @@ namespace note_backend.Controllers
 
 
             var token = _authService.GenerateJwtToken(user);
-            return Ok(new { token });
+            return Ok(new { token, user });
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrEmpty(email))
+                return Unauthorized();
+
+            var user = await _repo.GetByEmailAsync(email); // Or however your user lookup works
+
+            if (user == null)
+                return NotFound();
+
+            var token = _authService.GenerateJwtToken(user);
+            return Ok(new { token, user });
         }
 
     }

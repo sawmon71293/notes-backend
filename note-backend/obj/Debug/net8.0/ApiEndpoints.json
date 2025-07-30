@@ -17,6 +17,16 @@
   },
   {
     "ContainingType": "note_backend.Controllers.AuthController",
+    "Method": "GetCurrentUser",
+    "RelativePath": "api/auth/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "note_backend.Controllers.AuthController",
     "Method": "Register",
     "RelativePath": "api/auth/register",
     "HttpMethod": "POST",
@@ -87,8 +97,8 @@
         "IsRequired": true
       },
       {
-        "Name": "note",
-        "Type": "note_backend.Models.Note",
+        "Name": "noteDto",
+        "Type": "note_backend.DTOs.NoteCreateDTO",
         "IsRequired": true
       }
     ],
