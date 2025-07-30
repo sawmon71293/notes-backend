@@ -2,7 +2,9 @@
 using Microsoft.Data.SqlClient;
 using note_backend.DTOs;
 using note_backend.Models;
+using System.Collections;
 using System.Security.Claims;
+using System.Text;
 
 namespace note_backend.Repositories
 {
@@ -68,6 +70,30 @@ namespace note_backend.Repositories
         {
             using var conn = Connection;
             return await conn.ExecuteAsync("DELETE FROM Notes WHERE Id = @Id", new { Id = id });
+        }
+
+        public async Task<IEnumerable<Note>> GetAllByQueryAsync(NoteQueryDTO queryDto)
+        {
+            using var conn = Connection;
+
+            var sql = new StringBuilder("SELECT * FROM Notes WHERE 1=1");
+            var parameters = new DynamicParameters();
+            if(!string.IsNullOrWhiteSpace(queryDto.Query))
+            {
+                sql.Append(" AND (Title LIKE @Query OR Content LIKE @Query)");
+                parameters.Add("Query", $"%{queryDto.Query}%");
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryDto.OrderBy))
+            {
+                sql.Append(" ORDER BY ").Append(queryDto.OrderBy);
+                if (queryDto.OrderbyDescending)
+                    sql.Append(" DESC");
+                else
+                    sql.Append(" ASC");
+            }
+            return await conn.QueryAsync<Note>(sql.ToString(), parameters);
+
         }
     }
 }

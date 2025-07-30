@@ -10,7 +10,7 @@ using System.Security.Claims;
 using static System.Net.WebRequestMethods;
 
 [ApiController]
-[Route("api/note")]
+[Route("api/")]
 [Authorize]
 public class NoteController : ControllerBase
 {
@@ -23,7 +23,7 @@ public class NoteController : ControllerBase
         _userRepo = userRepo;
     }
 
-    [HttpGet]
+    [HttpGet("note")]
     public async Task<IActionResult> Get()
     {
         var email = User.FindFirst(ClaimTypes.Email)?.Value;
@@ -31,14 +31,14 @@ public class NoteController : ControllerBase
         return Ok(await _repo.GetAllAsync(userId: user.Id));
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("note/{id}")]
     public async Task<IActionResult> Get(int id)
     {
         var note = await _repo.GetByIdAsync(id);
         return note == null ? NotFound() : Ok(note);
     }
 
-    [HttpPost]
+    [HttpPost("note")]
     public async Task<IActionResult> Post([FromBody] NoteCreateDTO noteDto)
     {
         var email = User.FindFirst(ClaimTypes.Email)?.Value;
@@ -71,7 +71,7 @@ public class NoteController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("note/{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] NoteCreateDTO noteDto)
     {
         NoteUpdateDTO updateDto = new NoteUpdateDTO
@@ -88,12 +88,28 @@ public class NoteController : ControllerBase
         return Ok(await _repo.GetAllAsync(userId: user.Id));
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("note/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         await _repo.DeleteAsync(id);
         var email = User.FindFirst(ClaimTypes.Email)?.Value;
         User? user = await _userRepo.GetByEmailAsync(email);
         return Ok(await _repo.GetAllAsync(userId: user.Id));
+    }
+
+    [HttpGet("notes")]
+    public async Task<IEnumerable<Note>> getNotes(
+        [FromQuery] string? query,
+        [FromQuery] string? sortBy = "CreatedAt",
+        [FromQuery] bool descending = false
+        )
+    {
+        var querying = new NoteQueryDTO
+        {
+            OrderBy = sortBy,
+            OrderbyDescending = descending,
+            Query = query
+        };
+        return (await _repo.GetAllByQueryAsync(querying));
     }
 }
