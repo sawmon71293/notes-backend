@@ -28,7 +28,7 @@
 
 # 📖 Notes Backend API <a name="about-project"></a>
 
-** Notes Backend API** is a C# RESTful API that performs CRUD operations, authentication, filtering, and sorting.
+** Notes Backend API** is a C# .Net Core RESTful API that performs CRUD operations, authentication, filtering, and sorting.
 ## 🛠 Built With <a name="built-with"></a>
 
 ### Tech Stack
