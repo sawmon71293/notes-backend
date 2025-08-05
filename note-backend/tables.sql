@@ -2,7 +2,7 @@ CREATE TABLE Users (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Name NVARCHAR(100),
     Email NVARCHAR(100) UNIQUE NOT NULL,
-    PasswordHash NVARCHAR(MAX)
+    Password NVARCHAR(MAX)
 );
 
 CREATE TABLE Notes (
