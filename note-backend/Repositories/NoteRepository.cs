@@ -78,6 +78,7 @@ namespace note_backend.Repositories
 
             var sql = new StringBuilder("SELECT * FROM Notes WHERE UserId = @UserId");
             var parameters = new DynamicParameters();
+            parameters.Add("UserId", queryDto.UserId);
             if(!string.IsNullOrWhiteSpace(queryDto.Query))
             {
                 sql.Append(" AND (Title LIKE @Query OR Content LIKE @Query)");
