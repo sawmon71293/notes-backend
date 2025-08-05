@@ -76,7 +76,7 @@ namespace note_backend.Repositories
         {
             using var conn = Connection;
 
-            var sql = new StringBuilder("SELECT * FROM Notes WHERE 1=1");
+            var sql = new StringBuilder("SELECT * FROM Notes WHERE UserId = @UserId");
             var parameters = new DynamicParameters();
             if(!string.IsNullOrWhiteSpace(queryDto.Query))
             {

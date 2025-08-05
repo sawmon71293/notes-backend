@@ -98,18 +98,26 @@ public class NoteController : ControllerBase
     }
 
     [HttpGet("notes")]
-    public async Task<IEnumerable<Note>> getNotes(
+    public async Task<IActionResult> getNotes(
         [FromQuery] string? query,
         [FromQuery] string? sortBy = "CreatedAt",
         [FromQuery] bool descending = false
         )
     {
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+        User? user = await _userRepo.GetByEmailAsync(email);
+        if(user == null)
+        {
+            return Unauthorized(new { message = "User not found" });
+        }
+
         var querying = new NoteQueryDTO
         {
             OrderBy = sortBy,
             OrderbyDescending = descending,
-            Query = query
+            Query = query,
+            UserId = user.Id
         };
-        return (await _repo.GetAllByQueryAsync(querying));
+        return Ok(await _repo.GetAllByQueryAsync(querying));
     }
 }
