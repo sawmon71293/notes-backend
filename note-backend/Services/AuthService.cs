@@ -1,7 +1,9 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using note_backend.Models;
+using note_backend.Repositories;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace note_backend.Services
@@ -9,10 +11,12 @@ namespace note_backend.Services
     public class AuthService
     {
         private readonly IConfiguration _config;
+        private readonly TokenRepository _tokenRepository;
 
-        public AuthService(IConfiguration config)
+        public AuthService(IConfiguration config, TokenRepository tokenRepository)
         {
             _config = config;
+            _tokenRepository = tokenRepository;
         }
 
         public string GenerateJwtToken(User user)
@@ -32,11 +36,30 @@ namespace note_backend.Services
                 issuer: _config["JwtSettings:Issuer"],
                 audience: _config["JwtSettings:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<RefreshToken> GenerateRefreshToken(User user)
+        {
+            var randomNumber = new Byte[32];
+            var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            
+            var token = Convert.ToBase64String(randomNumber);
+            var refreshToken = new RefreshToken
+            {
+                UserId = user.Id,
+                Token = token,
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
+            };
+            await _tokenRepository.CreateAsync(refreshToken);
+            return refreshToken;
+            
+            
         }
     }
 }

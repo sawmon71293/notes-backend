@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uFOopFFRbA8=",
+  "dgSpecHash": "HxtBrTomnCI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\sawmo\\source\\repos\\note-backend\\note-backend\\note-backend.csproj",
+  "projectFilePath": "D:\\Projects\\notes-backend\\note-backend\\note-backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sawmo\\.nuget\\packages\\azure.core\\1.44.1\\azure.core.1.44.1.nupkg.sha512",
     "C:\\Users\\sawmo\\.nuget\\packages\\azure.identity\\1.13.2\\azure.identity.1.13.2.nupkg.sha512",

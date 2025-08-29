@@ -17,7 +17,9 @@ builder.Services.AddSwaggerGen();
 // Add scoped services
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<NoteRepository>();
+builder.Services.AddScoped<TokenRepository>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<UserService>();
 
 // JWT Authentication setup
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

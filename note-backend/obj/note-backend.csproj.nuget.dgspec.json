@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sawmo\\source\\repos\\note-backend\\note-backend\\note-backend.csproj": {}
+    "D:\\Projects\\notes-backend\\note-backend\\note-backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sawmo\\source\\repos\\note-backend\\note-backend\\note-backend.csproj": {
+    "D:\\Projects\\notes-backend\\note-backend\\note-backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sawmo\\source\\repos\\note-backend\\note-backend\\note-backend.csproj",
+        "projectUniqueName": "D:\\Projects\\notes-backend\\note-backend\\note-backend.csproj",
         "projectName": "note-backend",
-        "projectPath": "C:\\Users\\sawmo\\source\\repos\\note-backend\\note-backend\\note-backend.csproj",
+        "projectPath": "D:\\Projects\\notes-backend\\note-backend\\note-backend.csproj",
         "packagesPath": "C:\\Users\\sawmo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sawmo\\source\\repos\\note-backend\\note-backend\\obj\\",
+        "outputPath": "D:\\Projects\\notes-backend\\note-backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -90,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

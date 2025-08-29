@@ -13,16 +13,18 @@ namespace note_backend.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserRepository _repo;
+        private readonly UserRepository _userRepo;
+        private readonly UserService _userService;
         private readonly AuthService _authService;
         private List<User> _users = new List<User>();
+        private readonly RefreshToken _refreshToken = new RefreshToken();
 
-        public AuthController(UserRepository repo, AuthService authService)
+        public AuthController(UserRepository repo, AuthService authService, UserService userService)
         {
-            _repo = repo;
+            _userRepo = repo;
             _authService = authService;
-
-            _users = _repo.GetAllAsync().Result.ToList();
+            _users = _userRepo.GetAllAsync().Result.ToList();
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -40,7 +42,7 @@ namespace note_backend.Controllers
                 Password = passwordHash
             };
 
-            int createdId = await _repo.CreateAsync(user);
+            int createdId = await _userRepo.CreateAsync(user);
             UserResponseDTO userResponseDTO = new UserResponseDTO
             {
                 Id = createdId,
@@ -52,7 +54,7 @@ namespace note_backend.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login(UserLoginDTO dto)
+        public async Task<IActionResult> LoginAsync(UserLoginDTO dto)
         {
             var user = _users.FirstOrDefault(u => u.Email == dto.Email);
             if (user == null || string.IsNullOrEmpty(user.Password) || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
@@ -60,6 +62,14 @@ namespace note_backend.Controllers
 
 
             var token = _authService.GenerateJwtToken(user);
+            var refreshToken = await _authService.GenerateRefreshToken(user);
+            Response.Cookies.Append("refreshToken", refreshToken.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = refreshToken.ExpiresAt
+            });
             return Ok(new { token, user });
         }
 
@@ -72,7 +82,7 @@ namespace note_backend.Controllers
             if (string.IsNullOrEmpty(email))
                 return Unauthorized();
 
-            var user = await _repo.GetByEmailAsync(email); // Or however your user lookup works
+            var user = await _userRepo.GetByEmailAsync(email); // Or however your user lookup works
 
             if (user == null)
                 return NotFound();
@@ -81,5 +91,16 @@ namespace note_backend.Controllers
             return Ok(new { token, user });
         }
 
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var user = await _userService.GetUserByRefreshToken(refreshToken);
+            if (user == null || _refreshToken.ExpiresAt < DateTime.UtcNow)
+                return Unauthorized();
+
+            string newAccessToken = _authService.GenerateJwtToken(user);
+            return Ok(new { accessToken = newAccessToken });
+        }
     }
 }

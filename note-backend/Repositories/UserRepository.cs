@@ -74,11 +74,6 @@ namespace note_backend.Repositories
             }
         }
 
-        private IActionResult Ok(object value, int newUserId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<int> UpdateAsync(User user)
         {
             using var conn = Connection;
@@ -114,5 +109,15 @@ namespace note_backend.Repositories
                 return false;
             }
         }
+
+        public async Task<RefreshToken?> GetUserByRefreshToken(string? refreshToken)
+        {
+            using var connection = Connection;
+            var sql = "SELECT * FROM RefreshTokens WHERE Token = @Token";
+            return await connection.QueryFirstOrDefaultAsync(sql, new { Token = refreshToken });
+            
+        }
+    
+        
     }
 }

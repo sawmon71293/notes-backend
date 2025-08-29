@@ -2,8 +2,6 @@
 using Microsoft.Data.SqlClient;
 using note_backend.DTOs;
 using note_backend.Models;
-using System.Collections;
-using System.Security.Claims;
 using System.Text;
 
 namespace note_backend.Repositories

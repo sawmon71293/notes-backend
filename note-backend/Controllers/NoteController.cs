@@ -1,13 +1,10 @@
 ﻿// Controllers/NotesController.cs
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using note_backend.DTOs;
 using note_backend.Models;
 using note_backend.Repositories;
-using System.Collections;
 using System.Security.Claims;
-using static System.Net.WebRequestMethods;
 
 [ApiController]
 [Route("api/")]

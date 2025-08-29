@@ -27,6 +27,16 @@
   },
   {
     "ContainingType": "note_backend.Controllers.AuthController",
+    "Method": "Refresh",
+    "RelativePath": "api/auth/refresh",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "note_backend.Controllers.AuthController",
     "Method": "Register",
     "RelativePath": "api/auth/register",
     "HttpMethod": "POST",
