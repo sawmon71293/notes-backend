@@ -1,7 +1,7 @@
 [
   {
     "ContainingType": "note_backend.Controllers.AuthController",
-    "Method": "Login",
+    "Method": "LoginAsync",
     "RelativePath": "api/auth/login",
     "HttpMethod": "POST",
     "IsController": true,
@@ -28,7 +28,7 @@
   {
     "ContainingType": "note_backend.Controllers.AuthController",
     "Method": "Refresh",
-    "RelativePath": "api/auth/refresh",
+    "RelativePath": "api/auth/refresh-token",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

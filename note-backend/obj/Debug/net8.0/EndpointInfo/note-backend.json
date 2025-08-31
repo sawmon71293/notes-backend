@@ -79,7 +79,7 @@
         }
       }
     },
-    "/api/auth/refresh": {
+    "/api/auth/refresh-token": {
       "post": {
         "tags": [
           "Auth"

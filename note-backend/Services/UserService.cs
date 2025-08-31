@@ -12,11 +12,15 @@ namespace note_backend.Services
             _userRepo = userRepository;
         }
 
-        public Task<User?> GetUserByRefreshToken(string? refreshToken)
+        public async Task<User?> GetUserByRefreshToken(string? refreshToken)
         {
-            var refreshTokenData = _userRepo.GetUserByRefreshToken(refreshToken);
-            Console.WriteLine(refreshTokenData.ToString());
-            return Task.FromResult<User?>(new User { });
+            if (refreshToken == null)
+            {
+                return null;
+            }
+
+            var user = await _userRepo.GetUserByRefreshToken(refreshToken);
+            return user;
         }
     }
 }

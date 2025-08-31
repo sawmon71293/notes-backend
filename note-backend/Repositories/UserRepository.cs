@@ -110,11 +110,18 @@ namespace note_backend.Repositories
             }
         }
 
-        public async Task<RefreshToken?> GetUserByRefreshToken(string? refreshToken)
+        public async Task<User?> GetUserByRefreshToken(string? refreshToken)
         {
             using var connection = Connection;
             var sql = "SELECT * FROM RefreshTokens WHERE Token = @Token";
-            return await connection.QueryFirstOrDefaultAsync(sql, new { Token = refreshToken });
+            var tokenData = await connection.QueryFirstOrDefaultAsync(sql, new { Token = refreshToken });
+            if (tokenData == null || tokenData.ExpiresAt < DateTime.UtcNow)
+            {
+                return null;
+            }
+            var sqlForUser = "SELECT * FROM Users WHERE ID = @UserId";
+            return await connection.QuerySingleOrDefaultAsync<User>(sqlForUser, new { tokenData.UserId });
+            
             
         }
     

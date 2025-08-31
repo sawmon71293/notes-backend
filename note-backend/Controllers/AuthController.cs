@@ -61,15 +61,17 @@ namespace note_backend.Controllers
                 return Unauthorized("Invalid email or password");
 
 
-            var token = _authService.GenerateJwtToken(user);
+            var token =  _authService.GenerateJwtToken(user);
             var refreshToken = await _authService.GenerateRefreshToken(user);
-            Response.Cookies.Append("refreshToken", refreshToken.Token, new CookieOptions
+            Response.Cookies.Append("refresh_token", refreshToken.Token, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None,
                 Expires = refreshToken.ExpiresAt
             });
+            Console.WriteLine($"Cookie set: {Response.Headers["Set-Cookie"]}");
+
             return Ok(new { token, user });
         }
 
@@ -91,16 +93,25 @@ namespace note_backend.Controllers
             return Ok(new { token, user });
         }
 
-        [HttpPost("refresh")]
+        [HttpPost("refresh-token")]
         public async Task<IActionResult> Refresh()
         {
-            var refreshToken = Request.Cookies["refreshToken"];
-            var user = await _userService.GetUserByRefreshToken(refreshToken);
-            if (user == null || _refreshToken.ExpiresAt < DateTime.UtcNow)
-                return Unauthorized();
+            var refreshToken = Request.Cookies["refresh_token"];
+            foreach (var cookie in Request.Cookies)
+            {
+                Console.WriteLine($"[{cookie.Key}] = {cookie.Value}");
+            }
 
+            Console.WriteLine("refresh token is :" + refreshToken);
+            var user = await _userService.GetUserByRefreshToken(refreshToken);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+                
+            Console.WriteLine("user", user);
             string newAccessToken = _authService.GenerateJwtToken(user);
-            return Ok(new { accessToken = newAccessToken });
+            return Ok(new { user, accessToken = newAccessToken });
         }
     }
 }

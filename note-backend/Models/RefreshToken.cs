@@ -8,5 +8,10 @@
         public DateTime ExpiresAt { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool Revoked { get; set; } = false;
+
+        public override string ToString()
+        {
+            return $"Token={Token}, UserId={UserId}, ExpiresAt={ExpiresAt}";
+        }
     }
 }
