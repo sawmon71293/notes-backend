@@ -1,0 +1,40 @@
+# Visual Studio and .NET specific files
+.vs/
+bin/
+obj/
+*.pdb
+*.suo
+*.user
+*.log
+*.bak
+*.cache
+*.psess
+*.vsp
+*.vspx
+[Bb]uild[Ll]og.htm
+[Tt]est[Rr]esult*/
+Generated_Code/
+
+# NuGet packages
+packages/
+*.nupkg
+
+# ReSharper and other extensions
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.dotCover
+*.ncrunch*
+*.local.xml
+
+# Publish output
+publish/
+AppPackages/
+csx/
+*.build.csdef
+
+# Other common exclusions
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
