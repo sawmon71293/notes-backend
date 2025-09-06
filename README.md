@@ -104,7 +104,7 @@ Installations:
 
 ## 🔭 Future Features <a name="features"></a>
 
-- For UI you can clone ==> git@github.com:sawmon71293/notes.git (used Nuxt 4)
+- For UI you can clone [Nuxt4 front-end](https://github.com/sawmon71293/notes.git)
 - Tests to be implemented.
 - Practice CI/CD and deployment.
 
@@ -141,3 +141,4 @@ I would like to thank myself for believing to dream big.
 This project is [MIT](./LICENSE) licensed.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
