@@ -68,7 +68,7 @@ namespace note_backend.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = refreshToken.ExpiresAt
+                Expires = DateTime.UtcNow.AddDays(7)
             });
             Console.WriteLine($"Cookie set: {Response.Headers["Set-Cookie"]}");
 
