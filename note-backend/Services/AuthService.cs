@@ -58,8 +58,12 @@ namespace note_backend.Services
             };
             await _tokenRepository.CreateAsync(refreshToken);
             return refreshToken;
-            
-            
+        }
+
+        public async Task<bool> RevokeRefreshToken(string token)
+        {
+            await _tokenRepository.RevokeAsync(token);
+            return await Task.FromResult(true);
         }
     }
 }

@@ -23,7 +23,13 @@ namespace note_backend.Repositories
             var sql = @"INSERT INTO RefreshTokens (UserId, Token, ExpiresAt, CreatedAt, Revoked ) 
                       VALUES (@UserId, @Token, @ExpiresAt, @CreatedAt, @Revoked)";
             await con.ExecuteAsync(sql, token);
+        }
 
+        public async Task<int> RevokeAsync(string token)
+        {
+            using var con = Connection;
+            var sql = "UPDATE RefreshTokens SET Revoked=1 WHERE Token = @Token";
+            return await con.ExecuteAsync(sql, new { Token = token });
         }
     }
 }

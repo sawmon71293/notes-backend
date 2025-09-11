@@ -1,40 +1,66 @@
-# Visual Studio and .NET specific files
-.vs/
-bin/
-obj/
-*.pdb
+## Ignore Visual Studio temporary files, build results, and
+## user-generated files
+
+# User-specific files
+*.rsuser
 *.suo
 *.user
-*.log
-*.bak
-*.cache
-*.psess
-*.vsp
-*.vspx
-[Bb]uild[Ll]og.htm
-[Tt]est[Rr]esult*/
-Generated_Code/
+*.userosscache
+*.sln.docstates
 
-# NuGet packages
-packages/
-*.nupkg
-
-# ReSharper and other extensions
-_ReSharper*/
-*.[Rr]e[Ss]harper
-*.dotCover
-*.ncrunch*
-*.local.xml
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+[Ll]ogs/
 
 # Publish output
 publish/
-AppPackages/
-csx/
-*.build.csdef
+out/
 
-# Other common exclusions
+# Visual Studio cache
+.vs/
+.vscode/
+
+# MSTest test results
+TestResults/
+*.VisualState.xml
+*.cache
+*.dat
+*.dbmdl
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# Local DBs
+*.db
+*.sqlite
+
+# Environment secrets
+.env
+.env.*
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+.nuget/
+
+# Others
+*.log
+*.DS_Store
 Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-.DS_Store
+
+# Rider
+.idea/
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# dotCover
+*.dotCover

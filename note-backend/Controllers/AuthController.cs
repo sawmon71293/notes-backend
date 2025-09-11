@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using note_backend.DTOs;
 using note_backend.Models;
 using note_backend.Repositories;
 using note_backend.Services;
+using System.Linq;
 using System.Security.Claims;
 
 namespace note_backend.Controllers
@@ -17,7 +19,6 @@ namespace note_backend.Controllers
         private readonly UserService _userService;
         private readonly AuthService _authService;
         private List<User> _users = new List<User>();
-        private readonly RefreshToken _refreshToken = new RefreshToken();
 
         public AuthController(UserRepository repo, AuthService authService, UserService userService)
         {
@@ -63,16 +64,17 @@ namespace note_backend.Controllers
 
             var token =  _authService.GenerateJwtToken(user);
             var refreshToken = await _authService.GenerateRefreshToken(user);
-            Response.Cookies.Append("refresh_token", refreshToken.Token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddDays(7)
-            });
-            Console.WriteLine($"Cookie set: {Response.Headers["Set-Cookie"]}");
 
-            return Ok(new { token, user });
+            //Response.Cookies.Append("refresh_token", refreshToken.Token, new CookieOptions
+            //{
+            //    HttpOnly = true,
+            //    Secure = true,
+            //    SameSite = SameSiteMode.None,
+            //    Expires = DateTime.UtcNow.AddDays(7),
+            //    Path="/"
+            //});
+
+            return Ok(new { token, user, refreshToken = refreshToken.Token });
         }
 
         [Authorize]
@@ -96,22 +98,32 @@ namespace note_backend.Controllers
         [HttpPost("refresh-token")]
         public async Task<IActionResult> Refresh()
         {
-            var refreshToken = Request.Cookies["refresh_token"];
-            foreach (var cookie in Request.Cookies)
+            var authHeader = Request.Headers["Authorization"].ToString();
+            
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer"))
             {
-                Console.WriteLine($"[{cookie.Key}] = {cookie.Value}");
+                return Unauthorized("Invalid Authorization header");
             }
-
-            Console.WriteLine("refresh token is :" + refreshToken);
+            var refreshToken = authHeader.Substring("Bearer ".Length).Trim();
             var user = await _userService.GetUserByRefreshToken(refreshToken);
+
             if (user == null)
             {
                 return Unauthorized();
             }
                 
-            Console.WriteLine("user", user);
             string newAccessToken = _authService.GenerateJwtToken(user);
-            return Ok(new { user, accessToken = newAccessToken });
+            var newRefreshToken = await _authService.GenerateRefreshToken(user);
+
+            //Response.Cookies.Append("refresh_token", newRefreshToken.Token, new CookieOptions
+            //{
+            //    HttpOnly = true,
+            //    Secure = true,
+            //    SameSite = SameSiteMode.None,
+            //    Expires = DateTime.UtcNow.AddDays(7),
+            //    Path= "/"
+            //});
+            return Ok(new { user, accessToken = newAccessToken, refreshToken = newRefreshToken.Token });
         }
     }
 }
